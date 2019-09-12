@@ -1,3 +1,6 @@
+#include <time.h>
+#include <stdio.h>
+
 int randomInteger(int seed, int lower, int upper, int count) {
     int i;
     int num;

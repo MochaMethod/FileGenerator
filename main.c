@@ -5,6 +5,18 @@
 #include <stdint.h>
 #include "random.h"
 
+/*
+    (WIP) The goal of the "File Generation" program is to
+    generate CSV or Excel files and populate them with fake
+    testing data, like names, phone numbers, date of births,
+    email addresses, etc.
+*/
+
+/*
+    The struct "FileInfo" is used to store testing data that
+    will be written to a given file. Using a struct is an
+    easy way to group similar data. 
+*/
 typedef struct FileInfo {
     char **emailArr;
     char **nameArr;
@@ -12,9 +24,26 @@ typedef struct FileInfo {
     
 } FileInfo;
 
-FileInfo *createFileInfo(
-    uint32_t count, char *emailPrefix, char *emailDomain, char *firstName, char *lastName
-    ) {
+/*
+    The "createFileInfo()" function allocates memory for
+    the struct and its arrays, and inputs data into the arrays.
+
+    @param count - The amount of fake data to create.
+
+    @param emailPrefix - The part of the email that comes
+    before the "@" sign.
+
+    @param emailDomain - The part of the email that includes
+    the "@" sign and everything that follows, e.g.
+    "@gmail.com".
+
+    @param firstName - The first name used for the test data.
+
+    @param lastName - The last name used for the test data.
+*/
+FileInfo *createFileInfo(uint32_t count, char *emailPrefix, char *emailDomain, char *firstName, char *lastName) 
+{
+    // Allocate memory for struct and arrays.
     FileInfo *fi = malloc(sizeof(FileInfo));
 
     size_t emailLen = strlen(emailPrefix) + strlen(emailDomain);
@@ -36,10 +65,11 @@ FileInfo *createFileInfo(
         fi->phoneArr[i] = malloc(count*phoneLen*sizeof(phoneBuffer));
     }
 
+    // If memory allocation was successful, append to arrays.
     if (fi->nameArr != NULL && fi->emailArr != NULL && fi->phoneArr != NULL) {
         for (uint32_t i=0; i<count; ++i) {
-            uint32_t phoneAreaCode = randomuint32_teger(i, 201, 901, 1);
-            uint32_t phoneSuffix = randomuint32_teger(i+1, 100, 199, 1);
+            uint32_t phoneAreaCode = randominteger(i, 201, 901, 1);
+            uint32_t phoneSuffix = randominteger(i+1, 100, 199, 1);
 
             snprintf(phoneBuffer, phoneLen + count, "(%d) %s%d", phoneAreaCode, phone, phoneSuffix);
             strcpy(fi->phoneArr[i], phoneBuffer);
@@ -59,7 +89,8 @@ FileInfo *createFileInfo(
     return fi;
 }
 
-int main() {
+int main() 
+{
     uint32_t count = 101;
     char *emailPrefix = "test";
     char *emailDomain = "@test.com";

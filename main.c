@@ -124,10 +124,6 @@ int main()
 
     FileInfo *fi = createFileInfo(count, emailPrefix, emailDomain, firstName, lastName);
 
-    /*for (uint32_t i=0; i<count; ++i) {
-        fprintf(stdout, "Name: %s, Email: %s, Phone: %s\n", fi->nameArr[i], fi->emailArr[i], fi->phoneArr[i]);
-    }*/
-
     writeToFile(count, "test.csv", fi->nameArr, fi->emailArr, fi->phoneArr);
 
     for (uint32_t i=0; i<count; ++i) {

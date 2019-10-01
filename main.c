@@ -5,6 +5,11 @@
 #include <stdint.h>
 #include "random.h"
 
+
+int x = 1;
+
+uint32_t y = 1;
+
 /*
     (WIP) The goal of the "File Generation" program is to
     generate CSV or Excel files and populate them with fake
@@ -89,6 +94,26 @@ FileInfo *createFileInfo(uint32_t count, char *emailPrefix, char *emailDomain, c
     return fi;
 }
 
+void writeToFile(uint32_t count, char *filename, char **nameArr, char **emailArr, char **phoneArr)
+{ 
+    FILE *f = fopen(filename, "w");
+    if (f == NULL) {
+        printf("Error opening file!\n");
+    }
+
+    const char *nameCol = "Full Name";
+    const char *emailCol = "Email"; 
+    const char *phoneCol = "Phone";
+
+    fprintf(f, "%s,%s,%s\n", nameCol, emailCol, phoneCol);
+
+    for (uint32_t i=0; i<count; ++i) {
+        fprintf(f, "%s,%s,%s\n", nameArr[i], emailArr[i], phoneArr[i]);
+    }
+
+    fclose(f);
+}
+
 int main() 
 {
     uint32_t count = 101;
@@ -99,9 +124,11 @@ int main()
 
     FileInfo *fi = createFileInfo(count, emailPrefix, emailDomain, firstName, lastName);
 
-    for (uint32_t i=0; i<count; ++i) {
+    /*for (uint32_t i=0; i<count; ++i) {
         fprintf(stdout, "Name: %s, Email: %s, Phone: %s\n", fi->nameArr[i], fi->emailArr[i], fi->phoneArr[i]);
-    }
+    }*/
+
+    writeToFile(count, "test.csv", fi->nameArr, fi->emailArr, fi->phoneArr);
 
     for (uint32_t i=0; i<count; ++i) {
         free(fi->emailArr[i]);

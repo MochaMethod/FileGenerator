@@ -94,6 +94,19 @@ FileInfo *createFileInfo(uint32_t count, char *emailPrefix, char *emailDomain, c
     return fi;
 }
 
+/*
+    The "writeToFile()" function inserts data from arrays into a csv file.
+
+    @param count - The amount of fake data to append to file.
+
+    @param filename - The name of the file to write to.
+
+    @param nameArr - A 2D array containing names.
+
+    @param emailArr - A 2D array containing email addresses.
+
+    @param phoneArr - A 2D array containing phone numbers.
+*/
 void writeToFile(uint32_t count, char *filename, char **nameArr, char **emailArr, char **phoneArr)
 { 
     FILE *f = fopen(filename, "w");

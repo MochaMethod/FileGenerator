@@ -49,24 +49,25 @@ FileInfo *createFileInfo(uint32_t count)
     }
 
     // Allocate memory for buffer strings
-    size_t emailLen = strlen(names[0]) * sizeof(char *);
-    char *emailBuffer = malloc(emailLen*count*sizeof(char *));
+    size_t emailLen = strlen(names[0])*sizeof(char *);
+    char *emailBuffer = malloc(emailLen*sizeof(char *));
 
-    size_t nameLen = strlen(names[0]) * sizeof(char *);
-    char *nameBuffer = malloc(nameLen*count*sizeof(nameBuffer));
+    size_t nameLen = strlen(names[0])*sizeof(char *);
+    char *nameBuffer = malloc(nameLen*sizeof(char *));
 
     char *phone = "555-0";
-    size_t phoneLen = (sizeof(uint32_t) * count) * strlen(phone);
-    char *phoneBuffer = malloc(phoneLen*count*sizeof(nameBuffer));
+    size_t phoneLen = strlen(phone)*sizeof(uint32_t);
+    char *phoneBuffer = malloc(phoneLen*sizeof(char *));
     if (emailDomain == NULL || nameBuffer == NULL || phoneBuffer == NULL) {
         printf("Null pointer(s) for buffer string(s)\n");
         return 0;
     }
 
     // Allocate memory for arrays in the struct, as well as their indexes
-    fi->emailArr = malloc(count*emailLen*sizeof(char*));
-    fi->nameArr = malloc(count*nameLen*sizeof(char *));
-    fi->phoneArr = malloc(count*phoneLen*sizeof(char *));
+    fi->emailArr = malloc(count*emailLen*sizeof(fi->emailArr));
+    printf("Allocated memory for heap: %d\n", count*emailLen*sizeof(fi->emailArr));
+    fi->nameArr = malloc(count*nameLen*sizeof(fi->nameArr));
+    fi->phoneArr = malloc(count*phoneLen*sizeof(fi->phoneArr));
     if (fi->emailArr == NULL || fi->nameArr == NULL || fi->phoneArr == NULL) {
         printf("Null pointer(s) for struct array(s)\n");
         return 0; 
@@ -97,7 +98,7 @@ FileInfo *createFileInfo(uint32_t count)
         strcpy(fi->phoneArr[i], phoneBuffer);
 
         sprintf(firstname, "%s", names[randominteger(i*i*count, 0, sizeof(names)/sizeof(names[0]), 1)]);
-        sprintf(lastname, "%s", names[randominteger(time(0)*i*count, 0, sizeof(names)/sizeof(names[0]), 1)]);
+        sprintf(lastname, "%s", names[randominteger(time(0)*i+count, 0, sizeof(names)/sizeof(names[0]), 1)]);
 
         snprintf(nameBuffer, nameLen * count, "%s %s", firstname, lastname);
         strcpy(fi->nameArr[i], nameBuffer);
@@ -151,9 +152,9 @@ void writeToFile(uint32_t count, char *filename, char **nameArr, char **emailArr
     fclose(f);
 }
 
-int main() 
+int main(int argc, char **argv) 
 {
-    uint32_t count = 10;
+    uint32_t count = atoi(argv[1]);
 
     printf("Calling create file info function...\n");
 

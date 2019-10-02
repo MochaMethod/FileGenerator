@@ -65,7 +65,6 @@ FileInfo *createFileInfo(uint32_t count)
 
     // Allocate memory for arrays in the struct, as well as their indexes
     fi->emailArr = malloc(count*emailLen*sizeof(fi->emailArr));
-    printf("Allocated memory for heap: %d\n", count*emailLen*sizeof(fi->emailArr));
     fi->nameArr = malloc(count*nameLen*sizeof(fi->nameArr));
     fi->phoneArr = malloc(count*phoneLen*sizeof(fi->phoneArr));
     if (fi->emailArr == NULL || fi->nameArr == NULL || fi->phoneArr == NULL) {

@@ -176,5 +176,5 @@ int main(int argc, char **argv)
     free(fi->phoneArr);
     free(fi);
 
-    return 0;
+    return argc;
 }

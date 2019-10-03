@@ -103,8 +103,13 @@ int writeToFile(char *filename, uint32_t count)
 
 int main(int argc, char **argv) 
 {
-    uint32_t count = atoi(argv[1]);
-    writeToFile("test1.csv", count);
+    char *filename = argv[1];
+    char *filenameBuffer = malloc(strlen(filename)+sizeof(char *));;
+    sprintf(filenameBuffer, "%s.csv", filename);
 
+    uint32_t count = atoi(argv[2]);
+    writeToFile(filenameBuffer, count);
+
+    free(filenameBuffer);
     return argc;
 }

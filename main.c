@@ -26,6 +26,7 @@ int writeToFile(char *filename, uint32_t count)
     };
 
     // Create file and set up column headers
+    fprintf(stdout, "Creating / opening variables and file...\n");
     FILE *f = fopen(filename, "w");
     if (f == NULL) {
         printf("Error opening file!\n");
@@ -52,24 +53,17 @@ int writeToFile(char *filename, uint32_t count)
     char *phoneBuffer = malloc(phoneLen*sizeof(char *));
     if (emailBuffer == NULL || nameBuffer == NULL || phoneBuffer == NULL) {
         printf("Null pointer(s) for buffer string(s)\n");
-        free(emailBuffer);
-        free(nameBuffer);
-        free(phoneBuffer);
-        return 0;
+        goto cleanup;
     }
 
     char *firstNameBuffer = malloc(count*sizeof(char *));
     char *lastNameBuffer = malloc(count*sizeof(char *));
     if (firstNameBuffer == NULL || lastNameBuffer == NULL) {
         printf("Null pointer(s) for firstname / lastname buffer string(s)\n");
-        free(emailBuffer);
-        free(nameBuffer);
-        free(phoneBuffer);
-        free(firstNameBuffer);
-        free(lastNameBuffer);
-        return 0;
+        goto cleanup;
     }
 
+    fprintf(stdout, "Appending to file...\n");
     // Start loop to create and append strings to csv
     for (uint32_t i=0; i<count; ++i) {
         char *randEmailDomain = emailDomain[randomInteger(i*time(0), 0, 3, 1)];
@@ -94,13 +88,15 @@ int writeToFile(char *filename, uint32_t count)
     }
     
     // Close file and free allocated memory
+    fprintf(stdout, "Closing file and freeing memory...\n");
     fclose(f);
 
-    free(emailBuffer);
-    free(nameBuffer);
-    free(phoneBuffer);
-    free(firstNameBuffer);
-    free(lastNameBuffer);
+    cleanup:
+        free(emailBuffer);
+        free(nameBuffer);
+        free(phoneBuffer);
+        free(firstNameBuffer);
+        free(lastNameBuffer);
 
     return 1;
 }

@@ -12,6 +12,13 @@
     email addresses, etc.
 */
 
+/*
+    The `writeToFile()` function creates strings that represent fake 'people' -- that is, fake names, emails, and phone numbers -- and appends the data to a csv format. 
+
+    @param char *filename: A string pointer representing the csv to write to.
+
+    @param uint32_t count: An integer representing the amount of 'people' to create.
+*/
 int writeToFile(char *filename, uint32_t count)
 { 
     char *names[] = {
@@ -34,7 +41,7 @@ int writeToFile(char *filename, uint32_t count)
         };
 
     // Allocate memory for buffer strings
-    size_t emailLen = strlen(names[0])*sizeof(char *);
+    size_t emailLen = strlen(emailDomain[0])*sizeof(char *);
     char *emailBuffer = malloc(emailLen*sizeof(char *));
 
     size_t nameLen = strlen(names[0])*sizeof(char *);
@@ -43,14 +50,27 @@ int writeToFile(char *filename, uint32_t count)
     char *phone = "555-0";
     size_t phoneLen = strlen(phone)*sizeof(uint32_t);
     char *phoneBuffer = malloc(phoneLen*sizeof(char *));
-    if (emailDomain == NULL || nameBuffer == NULL || phoneBuffer == NULL) {
+    if (emailBuffer == NULL || nameBuffer == NULL || phoneBuffer == NULL) {
         printf("Null pointer(s) for buffer string(s)\n");
+        free(emailBuffer);
+        free(nameBuffer);
+        free(phoneBuffer);
         return 0;
     }
 
-    char *firstname = malloc(count*sizeof(char *));
-    char *lastname = malloc(count*sizeof(char *));
+    char *firstNameBuffer = malloc(count*sizeof(char *));
+    char *lastNameBuffer = malloc(count*sizeof(char *));
+    if (firstNameBuffer == NULL || lastNameBuffer == NULL) {
+        printf("Null pointer(s) for firstname / lastname buffer string(s)\n");
+        free(emailBuffer);
+        free(nameBuffer);
+        free(phoneBuffer);
+        free(firstNameBuffer);
+        free(lastNameBuffer);
+        return 0;
+    }
 
+    // Start loop to create and append strings to csv
     for (uint32_t i=0; i<count; ++i) {
         char *randEmailDomain = emailDomain[randomInteger(i*time(0), 0, 3, 1)];
 
@@ -62,23 +82,25 @@ int writeToFile(char *filename, uint32_t count)
         uint32_t firstNameRand = randomInteger(i*count, 0, sizeof(names)/sizeof(names[0])-1, 1);
         uint32_t lastNameRand = randomInteger(time(0)*count+i, 0, sizeof(names)/sizeof(names[0])-1, 1);
 
-        sprintf(firstname, "%s", names[firstNameRand]);
-        sprintf(lastname, "%s", names[lastNameRand]);
+        sprintf(firstNameBuffer, "%s", names[firstNameRand]);
+        sprintf(lastNameBuffer, "%s", names[lastNameRand]);
 
-        snprintf(nameBuffer, nameLen * count, "%s %s", firstname, lastname);
+        snprintf(nameBuffer, nameLen * count, "%s %s", firstNameBuffer, lastNameBuffer);
 
-        snprintf(emailBuffer, emailLen * count, "%s.%s%d%s", firstname,lastname, i, randEmailDomain);
+        snprintf(emailBuffer, emailLen * count, "%s.%s%d%s", firstNameBuffer,lastNameBuffer, i, randEmailDomain);
 
+        // Write to file
         fprintf(f, "%s,%s,%s\n", nameBuffer, emailBuffer, phoneBuffer);
     }
     
+    // Close file and free allocated memory
     fclose(f);
 
     free(emailBuffer);
     free(nameBuffer);
     free(phoneBuffer);
-    free(firstname);
-    free(lastname);
+    free(firstNameBuffer);
+    free(lastNameBuffer);
 
     return 1;
 }

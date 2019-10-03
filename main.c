@@ -39,7 +39,7 @@ FileInfo *createFileInfo(uint32_t count)
     printf("Allocating memory for variables...\n");
     // Acceptable email address domains
     char *emailDomain[] = {
-        "@gmail.com", "@yahoo.com", "@hotmail.com", "@mail.net"
+        "@gmail.com", "@yahoo.com", "@hotmail.com", "@mail.net", "\0"
         };
 
     FileInfo *fi = malloc(sizeof(FileInfo));
@@ -96,8 +96,11 @@ FileInfo *createFileInfo(uint32_t count)
         snprintf(phoneBuffer, phoneLen + count, "(%d) %s%d", phoneAreaCode, phone, phoneSuffix);
         strcpy(fi->phoneArr[i], phoneBuffer);
 
-        sprintf(firstname, "%s", names[randominteger(i*i*count, 0, sizeof(names)/sizeof(names[0]), 1)]);
-        sprintf(lastname, "%s", names[randominteger(time(0)*i+count, 0, sizeof(names)/sizeof(names[0]), 1)]);
+        uint32_t firstNameRand = randominteger(i*count, 0, sizeof(names)/sizeof(names[0])-1, 1);
+        uint32_t lastNameRand = randominteger(time(0)*count+i, 0, sizeof(names)/sizeof(names[0])-1, 1);
+
+        sprintf(firstname, "%s", names[firstNameRand]);
+        sprintf(lastname, "%s", names[lastNameRand]);
 
         snprintf(nameBuffer, nameLen * count, "%s %s", firstname, lastname);
         strcpy(fi->nameArr[i], nameBuffer);

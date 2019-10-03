@@ -88,16 +88,16 @@ FileInfo *createFileInfo(uint32_t count)
     printf("Creating and modifying data for arrays...\n");
     // Create and modify data to append to struct arrays
     for (uint32_t i=0; i<count; ++i) {
-        char *randEmailDomain = emailDomain[randominteger(i*time(0), 0, 3, 1)];
+        char *randEmailDomain = emailDomain[randomInteger(i*time(0), 0, 3, 1)];
 
-        uint32_t phoneAreaCode = randominteger(i, 201, 901, 1);
-        uint32_t phoneSuffix = randominteger(i+1, 100, 199, 1);
+        uint32_t phoneAreaCode = randomInteger(i, 201, 901, 1);
+        uint32_t phoneSuffix = randomInteger(i+1, 100, 199, 1);
 
         snprintf(phoneBuffer, phoneLen + count, "(%d) %s%d", phoneAreaCode, phone, phoneSuffix);
         strcpy(fi->phoneArr[i], phoneBuffer);
 
-        uint32_t firstNameRand = randominteger(i*count, 0, sizeof(names)/sizeof(names[0])-1, 1);
-        uint32_t lastNameRand = randominteger(time(0)*count+i, 0, sizeof(names)/sizeof(names[0])-1, 1);
+        uint32_t firstNameRand = randomInteger(i*count, 0, sizeof(names)/sizeof(names[0])-1, 1);
+        uint32_t lastNameRand = randomInteger(time(0)*count+i, 0, sizeof(names)/sizeof(names[0])-1, 1);
 
         sprintf(firstname, "%s", names[firstNameRand]);
         sprintf(lastname, "%s", names[lastNameRand]);

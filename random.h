@@ -13,7 +13,8 @@
 
     @param count - Iterations to run before returning integer.
 */
-uint32_t randominteger(uint32_t seed, uint32_t lower, uint32_t upper, uint32_t count) {
+uint32_t randominteger(uint32_t seed, uint32_t lower, uint32_t upper, uint32_t count) 
+{
     uint32_t i;
     uint32_t num;
 
